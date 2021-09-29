@@ -1,0 +1,111 @@
+........................Common..................................................................................................................................
+1) Pool: All queries in MySQL connection are done one after another. It means that if you want to do 10 queries and each query takes 2 seconds then it will take 20 seconds
+to complete whole execution.
+The solution is to create 10 connection and run each query in a different connection. This can be done automatically using connection pool.
+2) Mysql: The mysql2 package is also very popular, but has a few advantages. 
+The advantage I care about is support for promises. The authors of this package have actually teamed up with the authors of the mysql package to reduce double efforts, 
+and was made to be compatible with mysql so for many people it’s a drop-in replacement.
+3) express: Require('express') returns a function reference. that function is called with express() . app is an object returned by express().
+4) Body_parser: In order to read HTTP POST data , we have to use "body-parser" node module. body-parser is a piece of express middleware that reads a form's input and
+ stores it as a javascript object accessible through req.body
+5)CORS: Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port)
+ other than its own from which a browser should permit loading of resources. 
+ CORS also relies on a mechanism by which browsers make a "preflight" request to the server hosting the cross-origin resource, in order to check that the server will permit the actual request.
+ In that preflight,the browser sends headers that indicate the HTTP method and headers that will be used in the actual request.
+6) Moment: Moment.js is a lightweight JavaScript date library for parsing, validating, manipulating, and formatting dates.
+7) Date-format: Dateformat is similar to Moment in that it formats dates using token strings, but it does so a bit differently. Using the browser version of datetime, 
+ it will extend the Date object to have a .format() method.
+8) Nodemailer: Nodemailer is a module for Node.js applications to allow easy as cake email sending.
+9) Multer: Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
+10) md5: md5 is a javascript function for hashing messages, passwords with MD5. Passwords are saved securely in the myphpadmin db database by hashing the user input with MD5
+Encoding password in md5 is the basic encoding and not recommended for the high-security platforms instead of that use SHA256 encoding for the password. 
+11) dovnet: Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. Storing configuration in the environment separate from code is based on
+The Twelve-Factor App methodology.
+12) urlcoded: urlencoded() function is a built-in middleware function in Express. It parses incoming requests with urlencoded payloads and is based on body-parser. 
+Parameter: The options parameter contains various property like extended, inflate, limit, verify etc.	
+13) app.get("/", function(req, res) {}: You define routing using methods of the Express app object that correspond to HTTP methods; 
+for example, app.get() to handle GET requests and app.post to handle POST requests. For a full list, see app.METHOD.
+You can also use app.all() to handle all HTTP methods and app.use() to specify middleware as the callback function.
+14) The req.body property contains key-value pairs of data submitted in the request body. By default, it is undefined and is populated when you use a middleware called
+ body-parsing such as express.urlencoded() or express.json().
+15) {var instKey = req.body.key;} A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body). This object will contain key-value pairs,
+ where the value can be a string or array (when extended is false), or any type (when extended is true).
+16) function NewRow(title,url): Used to add new row in existing table.
+17)  if (instKey && key === md5(instKey): If any value between instaKey and key is true. than instaKey will be encoded with md5 method.
+18) conn.query: is used to execute the user query and request database to fatch query detail.
+19) if (rows.length > 0): If rows length is greater than 0 ,than title will be "dynamic_tab_name" and x = row.content. If x==="" than response will be This institute does not have dynamic button
+and status will be {failed}. Else SELECT query will run and establish connection between server and web_dynamic_menu_bar database. After this newRows will be created and data will be stored respectively.
+After the data is store we get response newsRows and status will be {successful}.
+
+........................CORE FEACTURE..................................................................................................................................
+Core features enable the main purpose that the technology is expected to fulfill the requirement of user.
+In core feacture we insert data like feature title, feature detail, feature heading, feature icon etc.
+First we gona establish connection between database and server, than insert details of features. Post method is used as request.
+
+
+......................../get_course_detail/top_courses.................................................................................................................
+Course is a unit of teaching that typically lasts one academic term, is led by one or more instructors (teachers or professors), and has a fixed roster of students.
+We provide top quality courses. User have to fill various types of field to store his data.
+
+Following are some of the field:
+1) Courses Name
+2) Courses Slug
+3) Courses Details
+4) Courses Image
+Connection will be establish with web_courses database.
+
+........................Get_notification1..............................................................................................................................
+A notification is a message that Android displays outside your app's UI to provide the user with reminders, 
+communication from other people, or other timely information from your app.
+
+There are verious field in notification:
+1) notify_id
+2) notify_title
+3) notify_description
+4) date
+5) image
+
+{conn.query("SELECT * FROM web_notification WHERE inst_hash=? ORDER BY notify_id DESC", id, function(err, rows)} Query is used to establish the connection between the server and database.
+1) If query does't execute than output will be {status = "Failed"}.
+2) If(rows.length>0) than we enter in another if loop (nasted loop) if(row.notify_date_update === null || row.notify_date_update === "" || row.notify_date_update === '0000-00-00')
+if any one of condition is true {row.notify_date_update === null || row.notify_date_update === "" || row.notify_date_update === '0000-00-00'} than {date = row.notify_date} 
+or else {date = row.notify_date_update;} date will update.
+3) New row will be created with the name of {row.notify_id, row.notify_title, row.notify_description, date,row.image}
+{newRows.push(newRow);} will help us to pure and insert the following data.
+After successfully insertion we get response {status = "success"}. If not than we get {status = "failed"} And connection will be terminated. 
+
+.......................get_testimonial1..............................................................................................................................
+A testimonial is a statement that says how good someone or something is. In testimonial user gone fill some field:
+Following are some of the field:
+1) first_name
+2) last_name
+3) image_url
+4) description
+5) video_url
+6) title
+If (result.length === 0) and response will be `{"response":{"img_url":""},"status":"failed"}`else array is created {resultarray = []} and data will be stored.
+at the end status will be successfull.
+
+
+.......................get_video1..............................................................................................................................
+Video is an electronic medium for the recording, copying, playback, broadcasting, and display of moving visual media.
+User will fullfill requirement like:
+1) video id 
+2)description 
+3)video title 
+4)video link respectively
+Database will be connected through 
+conn.query("SELECT * FROM web_video WHERE inst_hash =? ORDER BY video_id DESC", id, function(err, rows) .if (n == 0) than {status = "success"} else(rows.length > 0 && n > 0) 
+is true than new row will create and n will decrement (n--).Loop will execute till the condition will satisfied. when (n===0) its false else true. True statement bring
+{status = "success"}.
+
+.......................Get_pdf_new1..............................................................................................................................
+PDF stands for "portable document format".  Essentially, the format is used when you need to save files that cannot be modified but still need to be easily shared and printed.
+User has to fulfill the following requirement:
+1)title
+2)sub_title
+3)pdf_name
+4)url
+connection will be connected with web_downloads table. After successfully connected with database and table ,new row will be create and data will stored in the newly created 
+row if(n == 0) than response will be {status = "success"}if not than response will be {status = "failed"}.
+
